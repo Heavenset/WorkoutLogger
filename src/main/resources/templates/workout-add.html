@@ -11,13 +11,10 @@
 	<header th:insert="Generic/header :: ~{header}"></header>
 	</div>
 
+	<!--here user will add values to create workout-->
 	<div class="container mt-2">
-		<h1>Workouts</h1>
-		<div th:each="x : ${posts}" class="alert alert-info mt-2">
-			<h3 th:text="${x.workoutName}"></h3>
-			<p th:text="${x.workoutDescription}"></p>
-			<a th:href="'/workouts/' + ${x.id}" >Check full workout</a>
-		</div>
+		<h1>Adding workout</h1>
+		<form action="/workout/add" method="post"></form>
 	</div>
 </body>
 

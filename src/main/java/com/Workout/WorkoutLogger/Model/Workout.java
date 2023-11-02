@@ -14,8 +14,8 @@ public class Workout {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String workoutName, workoutDescription;
-	private int views;
+	public String workoutName, workoutDescription;
+	public int views;
 
 	// Getters and setters
 	public String getName() {
