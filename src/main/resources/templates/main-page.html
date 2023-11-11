@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title th:text="${title}"></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="resources/dropdownButton.css">
+</head>
+
+<body>
+	<header th:insert="~{Generic/header :: ~{header}}"></header>
+	</div>
+
+	<div class="container mt-2">
+		<h1>Workouts</h1>
+		<link href="dropdownButton.css" rel="stylesheet" type="text/css" />
+		<div th:each="x : ${workouts}" class="alert alert-info mt-2">
+			<h3 th:text="${x.workoutName}"></h3>
+			<p th:text="${x.workoutDescription}"></p>
+			<h6>Views: </h6>
+			<h6 th:text="${x.views}"></h6>
+
+			<a th:href="'/workouts/' + ${x.id}">Check full workout</a>
+
+			<div class="dropdown" data-bs-theme="dark">
+
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonDark"
+					data-bs-toggle="dropdown" aria-expanded="false">
+					View Options
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonDark">
+					<li><a class="dropdown-item active" href="workouts/delete">Delete</a>
+						<a class="dropdown-item active" href="workouts/edit">Edit</a>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

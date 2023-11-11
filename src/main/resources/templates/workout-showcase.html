@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+	<title th:text="${title}"></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link href="resources/dropdownButton.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<header th:insert="~{Generic/header :: ~{header}}"></header>
+	</div>
+
+
+	<div class="container mt-2">
+
+
+		<div th:each="x : ${workouts}" class="alert alert-info mt-2">
+			<h1 th:text="${x.workoutName}" id="here"></h1>
+			<p th:text="${x.workoutDescription}"></p>
+		</div>
+	</div>
+</body>
+
+</html>
