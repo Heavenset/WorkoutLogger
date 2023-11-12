@@ -13,12 +13,15 @@
 
 	<div class="container mt-2">
 		<h1>Workouts</h1>
-		<link href="dropdownButton.css" rel="stylesheet" type="text/css" />
+		<link href="main-page.css" rel="stylesheet" type="text/css" />
 		<div th:each="x : ${workouts}" class="alert alert-info mt-2">
 			<h3 th:text="${x.workoutName}"></h3>
 			<p th:text="${x.workoutDescription}"></p>
+			<p>
 			<h6>Views: </h6>
-			<h6 th:text="${x.views}"></h6>
+			<span th:text="${x.views}" class="views"></span>
+			</p>
+
 
 			<a th:href="'/workouts/' + ${x.id}">Check full workout</a>
 
@@ -29,8 +32,12 @@
 					View Options
 				</button>
 				<ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonDark">
-					<li><a class="dropdown-item active" href="workouts/delete">Delete</a>
-						<a class="dropdown-item active" href="workouts/edit">Edit</a>
+					<li>
+						<form th:action="@{workouts/{id}/delete(id=${x.id})}" th:object="${x.id}" th:method="post">
+							<button class="dropdown-item active"
+								th:href="'/workouts/' + ${x.id} + '/delete'">Delete</button>
+						</form>
+						<button class="dropdown-item active" th:href="'/workouts/' + ${x.id} + '/edit'">Edit</button>
 					</li>
 
 				</ul>

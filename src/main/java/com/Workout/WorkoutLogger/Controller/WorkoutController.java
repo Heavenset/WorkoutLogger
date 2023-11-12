@@ -39,16 +39,37 @@ public class WorkoutController {
 		workout.setName(workout_title);
 		workout.setWorkoutDescription(workout_description);
 		workoutRepository.save(workout);
-		return "redirect:/workouts/add";
+		return "redirect:/workouts";
 	}
 
-	@GetMapping("/workouts/{id}")
-	public ModelAndView getWorkoutDetails(@PathVariable Long id) {
-		Workout workout = workoutRepository.findById(id).orElse(null);
-
-		ModelAndView modelAndView = new ModelAndView("workout-showcase");
-		modelAndView.addObject("workouts", workout);
-		return modelAndView;
+	@GetMapping("/workouts/{id}/edit")
+	public String showEditWorkout(@PathVariable(value = "id") long id) {
+		if (!workoutRepository.existsById(id)) {
+			return "redirect:/main-page";
+		}
+		return "workout-edit";
 	}
 
+	@PostMapping(value = "/workouts/{id}/edit")
+	public String editWorkout(@PathVariable(value = "id") long id, @RequestParam("title") String workout_title,
+			@RequestParam("workout_description") String workout_description) {
+		Workout workout = workoutRepository.findById(id).orElseThrow();
+
+		if (!workout_title.isEmpty()) {
+			workout.setName(workout_title);
+		}
+
+		if (!workout_description.isEmpty()) {
+			workout.setWorkoutDescription(workout_description);
+		}
+		workoutRepository.save(workout);
+		return "redirect:/workouts";
+	}
+
+	@PostMapping(value = "/workouts/{id}/delete")
+	public String deleteWorkout(@PathVariable(value = "id") long id) {
+		Workout workout = workoutRepository.findById(id).orElseThrow();
+		workoutRepository.delete(workout);
+		return "workout-delete.html";
+	}
 }

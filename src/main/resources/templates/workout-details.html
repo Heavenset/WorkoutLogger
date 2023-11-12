@@ -14,10 +14,8 @@
 
 
 	<div class="container mt-2">
-
-
 		<div th:each="x : ${workouts}" class="alert alert-info mt-2">
-			<h1 th:text="${x.workoutName}" id="here"></h1>
+			<h1 th:text="${x.workoutName}"></h1>
 			<p th:text="${x.workoutDescription}"></p>
 		</div>
 	</div>
