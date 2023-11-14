@@ -1,5 +1,7 @@
 package com.Workout.WorkoutLogger.Controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.Workout.WorkoutLogger.Model.Workout;
 import com.Workout.WorkoutLogger.Repository.WorkoutRepository;
+import com.Workout.WorkoutLogger.Util.PageCloseUTIL;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class WorkoutController {
@@ -57,19 +62,27 @@ public class WorkoutController {
 
 		if (!workout_title.isEmpty()) {
 			workout.setName(workout_title);
+		} else {
+			workout.setName("None");
 		}
 
 		if (!workout_description.isEmpty()) {
 			workout.setWorkoutDescription(workout_description);
+		} else {
+			workout.setWorkoutDescription("None");
 		}
 		workoutRepository.save(workout);
 		return "redirect:/workouts";
 	}
 
 	@PostMapping(value = "/workouts/{id}/delete")
-	public String deleteWorkout(@PathVariable(value = "id") long id) {
+	public String deleteWorkout(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
 		Workout workout = workoutRepository.findById(id).orElseThrow();
 		workoutRepository.delete(workout);
+		
+		int delayInSeconds = 3;
+		String redirectUrl = "/workouts";
+		PageCloseUTIL.closePageAndRedirect(response, delayInSeconds, redirectUrl);
 		return "workout-delete.html";
 	}
 }
