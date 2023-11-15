@@ -13,9 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.Workout.WorkoutLogger.Model.Workout;
 import com.Workout.WorkoutLogger.Repository.WorkoutRepository;
-import com.Workout.WorkoutLogger.Util.PageCloseUTIL;
-
-import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class WorkoutController {
@@ -76,13 +73,9 @@ public class WorkoutController {
 	}
 
 	@PostMapping(value = "/workouts/{id}/delete")
-	public String deleteWorkout(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
+	public String deleteWorkout(@PathVariable(value = "id") long id) throws IOException {
 		Workout workout = workoutRepository.findById(id).orElseThrow();
 		workoutRepository.delete(workout);
-		
-		int delayInSeconds = 3;
-		String redirectUrl = "/workouts";
-		PageCloseUTIL.closePageAndRedirect(response, delayInSeconds, redirectUrl);
-		return "workout-delete.html";
+		return "workout-delete-LABEL.html";
 	}
 }

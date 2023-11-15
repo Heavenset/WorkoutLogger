@@ -2,6 +2,12 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 
+<script>
+	setTimeout(function () {
+		window.location.href = 'http://localhost:8080/workouts';
+	}, 3000); // 3 seconds and then redirect
+</script>
+
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
@@ -14,6 +20,7 @@
 	<div class="container mt-2">
 
 		<h1>Workout has been deleted!</h1>
+		<h3>You will be redirected back soon, please wait.</h3>
 	</div>
 </body>
 
