@@ -12,8 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface UserRepository extends JpaRepository<Object, Object> {
 	@Transactional(readOnly = true)
-	static Optional<User> findByEmail(String email) {
-		// TODO Auto-generated method stub
+	static Optional<User> findByUsername(String username) {
 		return null;
 	}
 }

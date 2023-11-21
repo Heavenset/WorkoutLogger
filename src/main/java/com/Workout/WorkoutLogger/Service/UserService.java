@@ -1,10 +1,10 @@
 package com.Workout.WorkoutLogger.Service;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.Workout.WorkoutLogger.Controller.Registration.RegistrationRequest;
 import com.Workout.WorkoutLogger.Repository.UserRepository;
 
 import lombok.AllArgsConstructor;
@@ -12,20 +12,20 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 
-public class UserService implements UserDetailsService {
+public class UserService {
 
-	private static final String USER_NOT_FOUND = "User is not found."
-			+ "\nEmail: %s";
 	private final UserRepository userRepository;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	public UserService(UserRepository userRepository) {
-		this.userRepository = userRepository;
+	public String register(RegistrationRequest request) {
+// Perform validation on the request
+
+// Create a new user entity
+		User newUser = new User();
+		newUser.setName(request.getUsername());
+		newUser.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+		userRepository.save(newUser);
+
+		return "User registered successfully!";
 	}
-
-	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
-		return UserRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, email)));
-	}
-
 }

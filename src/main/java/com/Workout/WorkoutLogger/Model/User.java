@@ -16,13 +16,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-@Table(name = "\"user\"")
+@Table(name = "user")
 public class User implements UserDetails {
+	private static final long serialVersionUID = 1L;
 
 	@SequenceGenerator(
 			name = "user_sequence",
@@ -47,46 +52,6 @@ public class User implements UserDetails {
 		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRoles.name());
 		return Collections.singletonList(authority);
 
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	@Override
