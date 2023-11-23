@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 
-public interface UserRepository extends JpaRepository<Object, Object> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 	@Transactional(readOnly = true)
 	static Optional<User> findByUsername(String username) {
 		return null;

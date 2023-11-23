@@ -1,7 +1,9 @@
 package com.Workout.WorkoutLogger.Model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,27 +17,22 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @EqualsAndHashCode
 @Table(name = "user")
 public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
-	@SequenceGenerator(
-			name = "user_sequence",
-			sequenceName = "user_sequence",
-			allocationSize = 1)
-	
+	@SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
 	private String name;
@@ -49,8 +46,7 @@ public class User implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRoles.name());
-		return Collections.singletonList(authority);
+		return List.of(new SimpleGrantedAuthority(userRoles.name()));
 
 	}
 
@@ -59,6 +55,11 @@ public class User implements UserDetails {
 		return userName;
 	}
 
+	@Override
+	public String getPassword() {
+		return password;
+	}
+	
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
