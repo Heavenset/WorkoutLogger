@@ -1,8 +1,6 @@
 package com.Workout.WorkoutLogger.Model;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -26,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Table(name = "user")
-public class User implements UserDetails {
+public class UserModel implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)

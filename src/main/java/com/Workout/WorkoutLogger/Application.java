@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan({"com.Workout.WorkoutLogger"})
 @EntityScan("com.Workout.WorkoutLogger.Model")
 
+
 public class Application {
 
 	public static void main(String[] args) {

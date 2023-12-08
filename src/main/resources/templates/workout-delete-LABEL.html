@@ -5,7 +5,7 @@
 <script>
 	setTimeout(function () {
 		window.location.href = 'http://localhost:8080/workouts';
-	}, 3000); // 3 seconds and then redirect
+	}, 3000); // waiting for 3 seconds and then redirecting
 </script>
 
 <head>
@@ -14,6 +14,7 @@
 
 <body>
 	<header th:insert="~{Generic/header :: ~{header}}"></header>
+	<header th:insert="~{Generic/dark-theme :: ~{dark-theme}}"></header>
 	</div>
 
 	<!--here user will add values to EDIT workout-->

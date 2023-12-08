@@ -1,6 +1,6 @@
 package com.Workout.WorkoutLogger.Service;
 
-import com.Workout.WorkoutLogger.Controller.Registration.RegistrationRequest;
+import com.Workout.WorkoutLogger.Model.RegistrationRequestModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.Getter;
 
 public class RegistrationService {
 
-	public String register(RegistrationRequest request) {
+	public String register(RegistrationRequestModel request) {
 		return "works";
 	}
 }

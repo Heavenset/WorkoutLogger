@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+	<title>Please Log In</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+	<header th:insert="~{Generic/dark-theme :: ~{dark-theme}}"></header>
+	<div class="login-page">
+		<div class="form">
+			<h1>Spring Boot Tutorial</h1>
+			<h2>Login</h2>
+			<div class="error" th:if="${param.error}">
+				Invalid username and password.</div>
+			<div class="error" th:if="${param.logout}">
+				You've been logged out.</div>
+			<form class="login-form" th:action="@{/login}" method="post">
+				<div>
+					<input type="text" name="username" placeholder="Username" />
+				</div>
+				<div>
+					<input type="password" name="password" placeholder="Password" />
+				</div>
+				<input class="button" type="submit" value="Log in" />
+				<h2>
+					Login via GitHub
+				</h2>
+
+				<a href="/login/oauth2/code/github">
+					Login via GitHub</a>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

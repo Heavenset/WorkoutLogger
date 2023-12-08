@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.Workout.WorkoutLogger.Model.Workout;
+import com.Workout.WorkoutLogger.Model.WorkoutModel;
 import com.Workout.WorkoutLogger.Repository.WorkoutRepository;
 
 @Controller
@@ -19,13 +19,18 @@ public class WorkoutController {
 
 	@Autowired
 	private WorkoutRepository workoutRepository;
+	
+	@GetMapping(value = "/")
+	public String welcomePage() {
+		return "welcome.html";
+	}
 
 	@GetMapping(value = "/workouts")
 	public ModelAndView showWorkouts(Model model) {
-		Iterable<Workout> workouts = workoutRepository.findAll();
+		Iterable<WorkoutModel> workoutModels = workoutRepository.findAll();
 		ModelAndView modelAndView = new ModelAndView("main-page");
 		// It may cause a bug so i have to look for it
-		modelAndView.addObject("workouts", workouts);
+		modelAndView.addObject("workouts", workoutModels);
 		return modelAndView;
 	}
 
@@ -37,10 +42,10 @@ public class WorkoutController {
 	@PostMapping(value = "/workouts/add")
 	public String addWorkout(@RequestParam("title") String workout_title,
 			@RequestParam("workout_description") String workout_description) {
-		Workout workout = new Workout();
-		workout.setName(workout_title);
-		workout.setWorkoutDescription(workout_description);
-		workoutRepository.save(workout);
+		WorkoutModel workoutModel = new WorkoutModel();
+		workoutModel.setName(workout_title);
+		workoutModel.setWorkoutDescription(workout_description);
+		workoutRepository.save(workoutModel);
 		return "redirect:/workouts";
 	}
 
@@ -55,27 +60,27 @@ public class WorkoutController {
 	@PostMapping(value = "/workouts/{id}/edit")
 	public String editWorkout(@PathVariable(value = "id") long id, @RequestParam("title") String workout_title,
 			@RequestParam("workout_description") String workout_description) {
-		Workout workout = workoutRepository.findById(id).orElseThrow();
+		WorkoutModel workoutModel = workoutRepository.findById(id).orElseThrow();
 
 		if (!workout_title.isEmpty()) {
-			workout.setName(workout_title);
+			workoutModel.setName(workout_title);
 		} else {
-			workout.setName("None");
+			workoutModel.setName("None");
 		}
 
 		if (!workout_description.isEmpty()) {
-			workout.setWorkoutDescription(workout_description);
+			workoutModel.setWorkoutDescription(workout_description);
 		} else {
-			workout.setWorkoutDescription("None");
+			workoutModel.setWorkoutDescription("None");
 		}
-		workoutRepository.save(workout);
+		workoutRepository.save(workoutModel);
 		return "redirect:/workouts";
 	}
 
 	@PostMapping(value = "/workouts/{id}/delete")
 	public String deleteWorkout(@PathVariable(value = "id") long id) throws IOException {
-		Workout workout = workoutRepository.findById(id).orElseThrow();
-		workoutRepository.delete(workout);
+		WorkoutModel workoutModel = workoutRepository.findById(id).orElseThrow();
+		workoutRepository.delete(workoutModel);
 		return "workout-delete-LABEL.html";
 	}
 }

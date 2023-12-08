@@ -1,4 +1,4 @@
-package com.Workout.WorkoutLogger.Controller.Registration;
+package com.Workout.WorkoutLogger.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -9,7 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class RegistrationRequest {
+public class RegistrationRequestModel {
 	private final String userName;
 	private final String password;
 	private final String email;
@@ -18,7 +18,7 @@ public class RegistrationRequest {
 		return userName;
 	}
 
-	public String register(RegistrationRequest request) {
+	public String register(RegistrationRequestModel request) {
 		return "works";
 	}
 
