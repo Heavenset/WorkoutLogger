@@ -24,12 +24,7 @@
 					<input type="password" name="password" placeholder="Password" />
 				</div>
 				<input class="button" type="submit" value="Log in" />
-				<h2>
-					Login via GitHub
-				</h2>
-
-				<a href="/login/oauth2/code/github">
-					Login via GitHub</a>
+				<a th:href="@{/oauth2/authorization/github}">Login with GitHub</a>
 			</form>
 		</div>
 	</div>
