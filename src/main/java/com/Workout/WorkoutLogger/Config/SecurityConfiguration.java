@@ -34,12 +34,9 @@ public class SecurityConfiguration {
 
 	private ClientRegistration githubClientRegistration() {
 		// Configure the OAuth2 client registration details for GitHub
-		return ClientRegistration.withRegistrationId("github").clientId("your-client-id")
-				.clientSecret("your-client-secret").clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+		return ClientRegistration.withRegistrationId("github")
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.redirectUri("{baseUrl}/{action}/oauth2/code/{registrationId}").scope("read:user", "user:email")
-				.authorizationUri("https://github.com/login/oauth/authorize")
-				.tokenUri("https://github.com/login/oauth/access_token").userInfoUri("https://api.github.com/user")
 				.userNameAttributeName(IdTokenClaimNames.SUB).clientName("GitHub").build();
 	}
 
