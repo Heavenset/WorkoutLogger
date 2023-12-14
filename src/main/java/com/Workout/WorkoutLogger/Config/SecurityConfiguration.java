@@ -18,10 +18,7 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
-				.oauth2Login(oauth2Login -> oauth2Login.loginPage("/login").defaultSuccessUrl("/dashboard").permitAll() // Redirect
-																											// URL after
-																											// successful
-																											// authentication
+				.oauth2Login(oauth2Login -> oauth2Login.loginPage("/login").permitAll()
 						.clientRegistrationRepository(githubClientRegistrationRepository()));
 
 		return http.build();
@@ -34,10 +31,12 @@ public class SecurityConfiguration {
 
 	private ClientRegistration githubClientRegistration() {
 		// Configure the OAuth2 client registration details for GitHub
-		return ClientRegistration.withRegistrationId("github")
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.redirectUri("{baseUrl}/{action}/oauth2/code/{registrationId}").scope("read:user", "user:email")
-				.userNameAttributeName(IdTokenClaimNames.SUB).clientName("GitHub").build();
+		return ClientRegistration.withRegistrationId("github").clientSecret("f5098c4b23968f1b122bdc30a6096d711d7ce41b")
+				.clientId("1a220061177ec370e0c0").redirectUri("/workouts")
+				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE).scope("read:user")
+				.authorizationUri("https://github.com/login/oauth/authorize")
+				.tokenUri("https://github.com/login/oauth/access_token").userInfoUri("https://api.github.com/user")
+				.userNameAttributeName("id").clientName("GitHub").build();
 	}
 
 }

@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Table(name = "user")
-public class UserModel implements UserDetails {
+public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
