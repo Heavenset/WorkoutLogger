@@ -19,7 +19,7 @@ public class WorkoutController {
 
 	@Autowired
 	private WorkoutRepository workoutRepository;
-	
+
 	@GetMapping(value = "/")
 	public String welcomePage() {
 		return "welcome.html";
@@ -43,7 +43,7 @@ public class WorkoutController {
 	public String addWorkout(@RequestParam("title") String workout_title,
 			@RequestParam("workout_description") String workout_description) {
 		WorkoutModel workoutModel = new WorkoutModel();
-		workoutModel.setName(workout_title);
+		workoutModel.setWorkoutName(workout_title);
 		workoutModel.setWorkoutDescription(workout_description);
 		workoutRepository.save(workoutModel);
 		return "redirect:/workouts";
@@ -63,14 +63,16 @@ public class WorkoutController {
 		WorkoutModel workoutModel = workoutRepository.findById(id).orElseThrow();
 
 		if (!workout_title.isEmpty()) {
-			workoutModel.setName(workout_title);
-		} else {
-			workoutModel.setName("None");
+			workoutModel.setWorkoutName(workout_description);
+		}
+		else {
+			workoutModel.setWorkoutName("None");
 		}
 
 		if (!workout_description.isEmpty()) {
 			workoutModel.setWorkoutDescription(workout_description);
-		} else {
+		}
+		else {
 			workoutModel.setWorkoutDescription("None");
 		}
 		workoutRepository.save(workoutModel);

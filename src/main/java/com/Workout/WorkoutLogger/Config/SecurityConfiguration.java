@@ -1,42 +1,73 @@
 package com.Workout.WorkoutLogger.Config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
+import com.Workout.WorkoutLogger.Service.UserService;
+
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
-				.oauth2Login(oauth2Login -> oauth2Login.loginPage("/login").permitAll()
-						.clientRegistrationRepository(githubClientRegistrationRepository()));
+    private UserService userService;
+    private JwtRequestFilter jwtRequestFilter;
 
-		return http.build();
-	}
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
-	@Bean
-	public ClientRegistrationRepository githubClientRegistrationRepository() {
-		return new InMemoryClientRegistrationRepository(githubClientRegistration());
-	}
+    @Autowired
+    public void setJwtRequestFilter(JwtRequestFilter jwtRequestFilter) {
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
-	private ClientRegistration githubClientRegistration() {
-		// Configure the OAuth2 client registration details for GitHub
-		return ClientRegistration.withRegistrationId("github").clientSecret("f5098c4b23968f1b122bdc30a6096d711d7ce41b")
-				.clientId("1a220061177ec370e0c0").redirectUri("/workouts")
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE).scope("read:user")
-				.authorizationUri("https://github.com/login/oauth/authorize")
-				.tokenUri("https://github.com/login/oauth/access_token").userInfoUri("https://api.github.com/user")
-				.userNameAttributeName("id").clientName("GitHub").build();
-	}
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .cors().disable()
+                .authorizeRequests()
+                .requestMatchers("/secured").authenticated()
+                .requestMatchers("/info").authenticated()
+                .requestMatchers("/admin").hasRole("ADMIN")
+                .anyRequest().permitAll()
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
 
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsService((UserDetailsService) userService);
+        return daoAuthenticationProvider;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 }

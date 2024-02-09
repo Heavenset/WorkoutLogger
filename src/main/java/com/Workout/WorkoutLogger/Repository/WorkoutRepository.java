@@ -7,5 +7,4 @@ import com.Workout.WorkoutLogger.Model.WorkoutModel;
 
 @Repository
 public interface WorkoutRepository extends JpaRepository<WorkoutModel, Long> {
-
 }

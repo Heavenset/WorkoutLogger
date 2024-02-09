@@ -2,17 +2,14 @@ package com.Workout.WorkoutLogger.Repository;
 
 import java.util.Optional;
 
-import com.Workout.WorkoutLogger.Model.User;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
+import com.Workout.WorkoutLogger.Entity.User;
 
 @Repository
-
-public interface UserRepository extends JpaRepository<User, Integer> {
-	@Transactional(readOnly = true)
-	static Optional<User> findByUsername(String username) {
-		return null;
-	}
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUsername(String username);
+    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
 }
