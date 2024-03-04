@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class JwtRequestFilter extends OncePerRequestFilter {
+public abstract class JwtRequestFilter extends OncePerRequestFilter {
 	private final JwtTokenUtils jwtTokenUtils;
 
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -50,11 +50,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	@Override
-	protected void doFilterInternal(jakarta.servlet.http.HttpServletRequest request,
-			jakarta.servlet.http.HttpServletResponse response, jakarta.servlet.FilterChain filterChain)
-			throws jakarta.servlet.ServletException, IOException {
-		// TODO Auto-generated method stub
-
-	}
 }

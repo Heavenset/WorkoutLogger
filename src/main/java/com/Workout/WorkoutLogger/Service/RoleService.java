@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import com.Workout.WorkoutLogger.Entity.Role;
 import com.Workout.WorkoutLogger.Repository.RoleRepository;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class RoleService {
