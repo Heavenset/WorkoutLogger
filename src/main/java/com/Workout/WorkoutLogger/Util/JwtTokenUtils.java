@@ -3,7 +3,12 @@ package com.Workout.WorkoutLogger.Util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -15,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.crypto.SecretKey;
+
 @Component
 public class JwtTokenUtils {
 	@Value("${jwt.secret}")
@@ -22,6 +29,12 @@ public class JwtTokenUtils {
 
 	@Value("${jwt.lifetime}")
 	private Duration jwtLifetime;
+
+	@Autowired
+	public JwtTokenUtils(String secret, Duration jwtLifetime) {
+		this.secret = secret;
+		this.jwtLifetime = jwtLifetime;
+	}
 
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
