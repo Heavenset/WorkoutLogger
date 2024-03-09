@@ -1,18 +1,5 @@
 package com.Workout.WorkoutLogger.Util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,21 +7,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.crypto.SecretKey;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenUtils {
-	@Value("${jwt.secret}")
-	private String secret;
+	private final String secret;
+    private final Duration jwtLifetime;
 
-	@Value("${jwt.lifetime}")
-	private Duration jwtLifetime;
-
-	@Autowired
-	public JwtTokenUtils(String secret, Duration jwtLifetime) {
-		this.secret = secret;
-		this.jwtLifetime = jwtLifetime;
-	}
+    @Autowired
+    public JwtTokenUtils(@Value("${jwt.secret}") String secret, @Value("${jwt.lifetime}") Duration jwtLifetime) {
+        this.secret = secret;
+        this.jwtLifetime = jwtLifetime;
+    }
 
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
