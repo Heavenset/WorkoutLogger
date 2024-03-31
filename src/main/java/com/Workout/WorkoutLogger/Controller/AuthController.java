@@ -15,7 +15,7 @@ import com.Workout.WorkoutLogger.Service.AuthenticationService;
 public class AuthController {
     private final AuthenticationService authenticationService;
 
-    @PostMapping("/auth")
+    @PostMapping("/login")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
         return authenticationService.createAuthToken(authRequest);
     }

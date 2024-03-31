@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.Workout.WorkoutLogger.Model.WorkoutModel;
+import com.Workout.WorkoutLogger.Entity.Workout;
 import com.Workout.WorkoutLogger.Repository.WorkoutRepository;
 
 @Controller
@@ -27,10 +27,10 @@ public class WorkoutController {
 
 	@GetMapping(value = "/workouts")
 	public ModelAndView showWorkouts(Model model) {
-		Iterable<WorkoutModel> workoutModels = workoutRepository.findAll();
+		Iterable<Workout> workoutS = workoutRepository.findAll();
 		ModelAndView modelAndView = new ModelAndView("main-page");
 		// It may cause a bug so i have to look for it
-		modelAndView.addObject("workouts", workoutModels);
+		modelAndView.addObject("workouts", workoutS);
 		return modelAndView;
 	}
 
@@ -42,10 +42,10 @@ public class WorkoutController {
 	@PostMapping(value = "/workouts/add")
 	public String addWorkout(@RequestParam("title") String workout_title,
 			@RequestParam("workout_description") String workout_description) {
-		WorkoutModel workoutModel = new WorkoutModel();
-		workoutModel.setWorkoutName(workout_title);
-		workoutModel.setWorkoutDescription(workout_description);
-		workoutRepository.save(workoutModel);
+		Workout workout = new Workout();
+		workout.setWorkoutName(workout_title);
+		workout.setWorkoutDescription(workout_description);
+		workoutRepository.save(workout);
 		return "redirect:/workouts";
 	}
 
@@ -60,7 +60,7 @@ public class WorkoutController {
 	@PostMapping(value = "/workouts/{id}/edit")
 	public String editWorkout(@PathVariable(value = "id") long id, @RequestParam("title") String workout_title,
 			@RequestParam("workout_description") String workout_description) {
-		WorkoutModel workoutModel = workoutRepository.findById(id).orElseThrow();
+		Workout workoutModel = workoutRepository.findById(id).orElseThrow();
 
 		if (!workout_title.isEmpty()) {
 			workoutModel.setWorkoutName(workout_description);
@@ -81,7 +81,7 @@ public class WorkoutController {
 
 	@PostMapping(value = "/workouts/{id}/delete")
 	public String deleteWorkout(@PathVariable(value = "id") long id) throws IOException {
-		WorkoutModel workoutModel = workoutRepository.findById(id).orElseThrow();
+		Workout workoutModel = workoutRepository.findById(id).orElseThrow();
 		workoutRepository.delete(workoutModel);
 		return "workout-delete-LABEL.html";
 	}

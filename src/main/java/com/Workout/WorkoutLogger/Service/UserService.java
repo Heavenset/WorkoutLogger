@@ -1,6 +1,6 @@
 package com.Workout.WorkoutLogger.Service;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.Workout.WorkoutLogger.DTOs.UserRegistrationDto;
+import com.Workout.WorkoutLogger.Entity.Role;
 import com.Workout.WorkoutLogger.Entity.User;
 import com.Workout.WorkoutLogger.Repository.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
 	private UserRepository userRepository;
-	private RoleService roleService;
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
@@ -29,26 +29,21 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Autowired
-	public void setRoleService(RoleService roleService) {
-		this.roleService = roleService;
-	}
-
-	@Autowired
 	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	public Optional<User> findByUsername(String username) {
+	public Optional<User> findByUserName(String username) {
 		return userRepository.findByUsername(username);
 	}
 
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = findByUsername(username).orElseThrow(
+		User user = findByUserName(username).orElseThrow(
 				() -> new UsernameNotFoundException(String.format("Пользователь '%s' не найден", username)));
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-				user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName()))
+				user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.name()))
 						.collect(Collectors.toList()));
 	}
 
@@ -57,7 +52,14 @@ public class UserService implements UserDetailsService {
 		user.setUsername(registrationUserDto.getUsername());
 		user.setEmail(registrationUserDto.getEmail());
 		user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
-		user.setRoles(List.of(roleService.getUserRole()));
+
+	    // Initialize the roles set
+	    user.setRoles(new HashSet<>());
+	    
+	    // Add roles to the user
+	    user.getRoles().add(Role.USER);
+	    // If you have other roles, you can add them like this:
+	    // user.getRoles().add(Role.ROLE_ADMIN);
 		return userRepository.save(user);
 	}
 }

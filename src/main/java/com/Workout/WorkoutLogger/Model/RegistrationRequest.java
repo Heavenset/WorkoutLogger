@@ -10,12 +10,12 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class RegistrationRequest {
-	private final String userName;
+	private final String username;
 	private final String password;
 	private final String email;
 
 	public String getUsername() {
-		return userName;
+		return username;
 	}
 
 	public String register(RegistrationRequest request) {

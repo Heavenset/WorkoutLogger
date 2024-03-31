@@ -45,7 +45,7 @@ public class AuthenticationService {
 			return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают"),
 					HttpStatus.BAD_REQUEST);
 		}
-		if (userService.findByUsername(registrationUserDto.getUsername()).isPresent()) {
+		if (userService.findByUserName(registrationUserDto.getUsername()).isPresent()) {
 			return new ResponseEntity<>(
 					new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с указанным именем уже существует"),
 					HttpStatus.BAD_REQUEST);
